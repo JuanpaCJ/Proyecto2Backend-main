@@ -11,12 +11,17 @@ async function getPedidosMongo(filtros) {
 }
 async function getPedidoMongo(id) {
   const pedido = await Pedido.findById(id);
+  if(pedido){
   if (pedido.isDeleted) {
     throw new Error(JSON.stringify({code: 404, msg:"Pedido no existe"}));
   } else {
     return pedido;
 
   }
+}else{
+  throw new Error(JSON.stringify({code: 404, msg:"Pedido no existe"}));
+
+}
 }
 async function createPedidoMongo(datos) {
 

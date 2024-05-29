@@ -42,7 +42,7 @@ async function PostPedido(req, res) {
       pedido: pedidoCreado,
     });
   } catch (error) {
-    const errorObj = JSON.parse(e.message);
+    const errorObj = JSON.parse(error.message);
     res.status(errorObj.code).json({ error: errorObj.msg });
   }
 }

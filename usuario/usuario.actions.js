@@ -4,11 +4,15 @@ const Usuario = require("./usuario.model")
 
 async function getUsuarioMongo(id) {
     const usuario = await Usuario.findById(id);
+    if (usuario){
     if (usuario.isDeleted) {
         throw new Error(JSON.stringify({code: 404, msg:"Usuario no existe"}));
     } else {
         return usuario;
 
+    }
+    }else{
+        throw new Error(JSON.stringify({code: 404, msg:"Usuario no existe"}));
     }
 }
 async function createUsuarioMongo(datos) {

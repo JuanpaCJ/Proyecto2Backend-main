@@ -8,6 +8,7 @@ async function getLibrosMongo(filtros) {
     cantidadLibros: cantidadLibros
   };
 }
+
 async function getLibroMongo(id, activate) {
 
   const libro = await Libro.findById(id);
@@ -20,8 +21,6 @@ async function getLibroMongo(id, activate) {
     return libro;
 
   }
-
-
 }
 async function createLibroMongo(datos) {
 

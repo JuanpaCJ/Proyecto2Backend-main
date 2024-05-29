@@ -4,7 +4,6 @@ const { readUsuario, createUsuario, updateUsuario, deleteUsuario } = require("./
 const { respondWithError } = require('../utils/functions');
 const { verificarTokenJWT } = require('../login/login.actions'); // Función para crear tokens
 
-
 async function GetUsuariosId(req, res) {
     try {
         const resultadosBusqueda = await readUsuario(req.params.id, req.userId);
@@ -21,11 +20,12 @@ async function PostUsuario(req, res) {
     try {
         const usuarioCreado = await createUsuario(req.body);
 
-        res.status(200).json({
-            mensaje: 'Usuario creado exitosamente. 👍',
-            usuario: usuarioCreado,
-        });
+       res.status(200).json({
+           mensaje: 'Usuario creado exitosamente. 👍',
+           usuario: usuarioCreado,
+       });
     } catch (error) {
+        console.log(error)
         const errorObj = JSON.parse(error.message);
         res.status(errorObj.code).json({ error: errorObj.msg });
     }
