@@ -22,7 +22,7 @@ async function createUsuario(userData) {
   }
 
   try {
-      const usuario = await Usuario.create(userData);
+      const usuario = await createUsuarioMongo(userData);
       return usuario;
   } catch (error) {
       throwCustomError(500, 'Error creando en la base de datos');

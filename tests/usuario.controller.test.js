@@ -40,13 +40,23 @@ const {
   
     describe('createUsuario', () => {
       it('debería crear un usuario válido', async () => {
-        const datos = { nombre: 'Nuevo Usuario', email: 'usuario@nueva.com' };
+        const datos = { nombre: 'Nuevo Usuario', email: 'usuario@nueva.com', password: "1234" };
         const usuarioCreado = { _id: 'usuario1', ...datos };
   
         createUsuarioMongo.mockResolvedValue(usuarioCreado);
   
         const result = await createUsuario(datos);
         expect(result).toEqual(usuarioCreado);
+      });
+      it('debería dar error al crear un usuario inválido', async () => {
+        const datos = { nombre: 'Nuevo Usuario', email: 'usuario@nueva.com' };
+        const usuarioCreado = { _id: 'usuario1', ...datos };
+  
+        createUsuarioMongo.mockResolvedValue(usuarioCreado);
+  
+        await expect(createUsuario(datos)).rejects.toThrow(
+          JSON.stringify({ code: 400, msg: 'Datos inválidos' })
+        );
       });
     });
   
