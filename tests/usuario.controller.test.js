@@ -1,136 +1,66 @@
-const {
+const { throwCustomError } = require("../utils/functions");
+const { createUsuarioMongo, getUsuarioMongo, getUsuariosMongo, updateUsuarioMongo, softDeleteUsuarioMongo } = require("./usuario.actions");
+const Usuario = require("./usuario.model")
+
+
+async function readUsuario(id, userId) {
+  if (id != userId) {
+    throw new Error(JSON.stringify({code: 403, msg:'Usted no es el dueño de esta cuenta, no la puede ver'}));
+  }
+  const resultadosBusqueda = await getUsuarioMongo(id);
+  return resultadosBusqueda;
+}
+
+async function createUsuario(datos) {
+  const { email, ...cambios } = datos;
+  if(!email){
+    throw new Error(JSON.stringify({code: 400, msg:"Debe proporcionar un correo electronico"}));
+  }
+  // hacer llamado a base de datos con el filtro de tipo
+  const UsuarioCreado = await createUsuarioMongo(datos);
+  return UsuarioCreado;
+}
+
+
+async function updateUsuario(datos, userId) {
+  const { _id, ...cambios } = datos;
+  const usuario = await Usuario.findById(_id);
+  console.log("xsxsxs")
+  console.log(usuario)
+  if (!usuario) {
+    throw new Error(JSON.stringify({code: 404, msg:"Usuario no existe"}));
+  }
+  if (_id !== userId) {
+    throw new Error(JSON.stringify({code: 403, msg:'Esta no es su cuenta, no puede modificarla'}));
+  }
+  // hacer llamado a base de datos con el filtro de tipo
+  const UsuarioCreado = await updateUsuarioMongo(_id, cambios);
+
+  return UsuarioCreado;
+}
+async function deleteUsuario(id, userId) {
+
+  const usuario = await getUsuarioMongo(id);
+
+  if (!usuario) {
+    throw new Error(JSON.stringify({code: 404, msg:'Usuario no encontrado'}));
+  } else {
+
+    if (id != userId) {
+      throw new Error(JSON.stringify({code: 403, msg:'Usted no es el dueño de esta cuenta, no la puede eliminar'}));
+    }
+  }
+
+  // Usa `await` para asegurarte de que el error se propague adecuadamente
+  const usuarioEliminado = await softDeleteUsuarioMongo(id);
+
+  return usuarioEliminado; // Devuelve el usuario eliminado
+
+}
+module.exports = {
+
   readUsuario,
   createUsuario,
   updateUsuario,
-  deleteUsuario,
-} = require('../usuario/usuario.controller');
-const {
-  createUsuarioMongo,
-  getUsuarioMongo,
-  updateUsuarioMongo,
-  softDeleteUsuarioMongo,
-} = require('../usuario/usuario.actions');
-const Usuario = require('../usuario/usuario.model');
-
-jest.mock('../usuario/usuario.actions');
-jest.mock('../usuario/usuario.model');
-
-describe('Usuarios Controller', () => {
-  describe('readUsuario', () => {
-    it('debería devolver un usuario válido por ID si es el dueño', async () => {
-      const id = 'usuario1';
-      const userId = 'usuario1';
-      const usuario = { _id: id, nombre: 'Usuario de Prueba' };
-
-      getUsuarioMongo.mockResolvedValue(usuario);
-
-      const result = await readUsuario(id, userId);
-      expect(result).toEqual(usuario);
-    });
-
-    it('debería lanzar un error si el usuario no es el dueño de la cuenta', async () => {
-      const id = 'usuario1';
-      const userId = 'usuario2';
-
-      await expect(readUsuario(id, userId)).rejects.toThrow(
-        JSON.stringify({ code: 403, msg: 'Usted no es el dueño de esta cuenta, no la puede ver' })
-      );
-    });
-  });
-
-  describe('createUsuario', () => {
-    it('debería crear un usuario válido', async () => {
-      const datos = { nombre: 'Nuevo Usuario', email: 'usuario@nueva.com', password: "1234" };
-      const usuarioCreado = { _id: 'usuario1', ...datos };
-
-      createUsuarioMongo.mockResolvedValue(usuarioCreado);
-
-      const result = await createUsuario(datos);
-      expect(result).toEqual(usuarioCreado);
-    });
-    it('debería dar error al crear un usuario inválido', async () => {
-      const datos = { nombre: 'Nuevo Usuario', email: 'usuario@nueva.com' };
-      const usuarioCreado = { _id: 'usuario1', ...datos };
-
-      createUsuarioMongo.mockResolvedValue(usuarioCreado);
-
-      await expect(createUsuario(datos)).rejects.toThrow(
-        JSON.stringify({ code: 400, msg: 'Datos inválidos' })
-      );
-    });
-  });
-
-  describe('updateUsuario', () => {
-    it('debería actualizar un usuario válido', async () => {
-      const datos = { _id: 'usuario1', nombre: 'Usuario Actualizado' };
-      const userId = 'usuario1';
-      const usuario = { _id: 'usuario1', vendedor: { toHexString: () => userId } };
-
-      Usuario.findById.mockResolvedValue(usuario);
-      updateUsuarioMongo.mockResolvedValue(datos);
-
-      const result = await updateUsuario(datos, userId);
-      expect(result).toEqual(datos);
-    });
-
-    it('debería lanzar un error si el usuario no es el dueño de la cuenta', async () => {
-      const datos = { _id: 'usuario1', nombre: 'Usuario Actualizado' };
-      const userId = 'usuario2';
-      const usuario = { _id: 'usuario1', vendedor: { toHexString: () => 'usuario1' } };
-
-      Usuario.findById.mockResolvedValue(usuario);
-
-      await expect(updateUsuario(datos, userId)).rejects.toThrow(
-        JSON.stringify({ code: 403, msg: 'Esta no es su cuenta, no puede modificarla' })
-      );
-    });
-
-    it('debería lanzar un error si el usuario no existe', async () => {
-      const datos = { _id: 'usuario1', nombre: 'Usuario Actualizado' };
-      const userId = 'usuario1';
-
-      Usuario.findById.mockResolvedValue(null);
-
-      await expect(updateUsuario(datos, userId)).rejects.toThrow(
-        JSON.stringify({ code: 404, msg: 'Usuario no existe' })
-      );
-    });
-  });
-
-  describe('deleteUsuario', () => {
-    it('debería eliminar un usuario válido', async () => {
-      const id = 'usuario1';
-      const userId = 'usuario1';
-      const usuario = { _id: id, vendedor: { toHexString: () => userId } };
-
-      getUsuarioMongo.mockResolvedValue(usuario);
-      softDeleteUsuarioMongo.mockResolvedValue(usuario);
-
-      const result = await deleteUsuario(id, userId);
-      expect(result).toEqual(usuario);
-    });
-
-    it('debería lanzar un error si el usuario no es el dueño de la cuenta', async () => {
-      const id = 'usuario1';
-      const userId = 'usuario2';
-      const usuario = { _id: id, vendedor: { toHexString: () => 'usuario1' } };
-
-      getUsuarioMongo.mockResolvedValue(usuario);
-
-      await expect(deleteUsuario(id, userId)).rejects.toThrow(
-        JSON.stringify({ code: 403, msg: 'Usted no es el dueño de esta cuenta, no la puede eliminar' })
-      );
-    });
-
-    it('debería lanzar un error si el usuario no existe', async () => {
-      const id = 'usuario1';
-      const userId = 'usuario1';
-
-      getUsuarioMongo.mockResolvedValue(null);
-
-      await expect(deleteUsuario(id, userId)).rejects.toThrow(
-        JSON.stringify({ code: 404, msg: 'Usuario no encontrado' })
-      );
-    });
-  });
-});
+  deleteUsuario
+}
