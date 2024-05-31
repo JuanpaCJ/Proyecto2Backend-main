@@ -6,7 +6,6 @@ const { verificarTokenJWT } = require('../login/login.actions'); // Función par
 
 async function GetLibros(req, res) {
     try {
-
         resultadosBusqueda = await readLibroConFiltros(req.query);
 
         res.status(200).json({

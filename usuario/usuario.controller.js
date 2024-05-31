@@ -4,8 +4,7 @@ const Usuario = require("./usuario.model")
 
 
 async function readUsuario(id, userId) {
-
-  if (id !== userId) {
+  if (id != userId) {
     throw new Error(JSON.stringify({code: 403, msg:'Usted no es el dueño de esta cuenta, no la puede ver'}));
   }
   const resultadosBusqueda = await getUsuarioMongo(id);
@@ -13,9 +12,12 @@ async function readUsuario(id, userId) {
 }
 
 async function createUsuario(datos) {
+  const { email, ...cambios } = datos;
+  if(!email){
+    throw new Error(JSON.stringify({code: 400, msg:"Debe proporcionar un correo electronico"}));
+  }
   // hacer llamado a base de datos con el filtro de tipo
   const UsuarioCreado = await createUsuarioMongo(datos);
-
   return UsuarioCreado;
 }
 
@@ -44,7 +46,7 @@ async function deleteUsuario(id, userId) {
     throw new Error(JSON.stringify({code: 404, msg:'Usuario no encontrado'}));
   } else {
 
-    if (id !== userId) {
+    if (id != userId) {
       throw new Error(JSON.stringify({code: 403, msg:'Usted no es el dueño de esta cuenta, no la puede eliminar'}));
     }
   }

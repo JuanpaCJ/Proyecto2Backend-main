@@ -26,6 +26,10 @@ async function readLibro(id) {
 
 async function createLibro(datos) {
     // hacer llamado a base de datos con el filtro de tipo
+    const {titulo,...resto} = datos
+    if(!titulo){
+        throw new Error(JSON.stringify({code: 400, msg:"Debe proporcionar un titulo para el libro"}));
+    }
     const LibroCreado = await createLibroMongo(datos);
 
     return LibroCreado;
