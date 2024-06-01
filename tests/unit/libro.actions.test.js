@@ -1,7 +1,7 @@
-const { getLibrosMongo, createLibroMongo, getLibroMongo, updateLibroMongo, softDeleteLibroMongo } = require('../libro/libro.actions');
-const Libro = require('../libro/libro.model');
+const { getLibrosMongo, createLibroMongo, getLibroMongo, updateLibroMongo, softDeleteLibroMongo } = require('../../libro/libro.actions');
+const Libro = require('../../libro/libro.model');
 
-jest.mock('../libro/libro.model');
+jest.mock('../../libro/libro.model');
 
 describe('Libro Actions', () => {
   describe('getLibrosMongo', () => {

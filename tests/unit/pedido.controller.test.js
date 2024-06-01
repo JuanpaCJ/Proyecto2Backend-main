@@ -4,25 +4,25 @@ const {
     createPedido,
     updatePedido,
     deletePedido,
-  } = require('../pedido/pedido.controller');
+  } = require('../../pedido/pedido.controller');
   const {
     getLibroMongo,
     updateLibroMongo,
-  } = require('../libro/libro.actions');
+  } = require('../../libro/libro.actions');
   const {
     createPedidoMongo,
     getPedidoMongo,
     getPedidosMongo,
     updatePedidoMongo,
     softDeletePedidoMongo,
-  } = require('../pedido/pedido.actions');
-  const Libro = require('../libro/libro.model');
-  const Pedido = require('../pedido/pedido.model');
+  } = require('../../pedido/pedido.actions');
+  const Libro = require('../../libro/libro.model');
+  const Pedido = require('../../pedido/pedido.model');
   
-  jest.mock('../libro/libro.actions');
-  jest.mock('../pedido/pedido.actions');
-  jest.mock('../libro/libro.model');
-  jest.mock('../pedido/pedido.model');
+  jest.mock('../../libro/libro.actions');
+  jest.mock('../../pedido/pedido.actions');
+  jest.mock('../../libro/libro.model');
+  jest.mock('../../pedido/pedido.model');
   
   describe('Pedidos Controller', () => {
     describe('createPedido', () => {

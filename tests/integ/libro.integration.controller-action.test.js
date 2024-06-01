@@ -7,19 +7,19 @@ const {
     createLibro,
     updateLibro,
     deleteLibro,
-} = require('../libro/libro.controller.js');
+} = require('../../libro/libro.controller.js');
 const {
    createLibroMongo,
    getLibroMongo,
    getLibrosMongo,
    updateLibroMongo,
    softDeleteLibroMongo,
-} = require('../libro/libro.actions.js');
+} = require('../../libro/libro.actions.js');
 
-const Libro = require('../libro/libro.model.js');
+const Libro = require('../../libro/libro.model.js');
 
-jest.mock('../libro/libro.model');
-jest.mock('../login/login.actions', () => ({
+jest.mock('../../libro/libro.model');
+jest.mock('../../login/login.actions', () => ({
     verificarTokenJWT: (req, res, next) => {
         req.userId = 1; // Asignar un valor de userId por defecto para los tests
         next();
@@ -28,7 +28,7 @@ jest.mock('../login/login.actions', () => ({
 
 const app = express();
 app.use(express.json());
-const libroRuta = require("../libro/libro.route.js");
+const libroRuta = require("../../libro/libro.route.js");
 app.use("/libro", libroRuta);
 
 describe("Pruebas de integración de libro controlador-acción", () => {

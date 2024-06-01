@@ -7,35 +7,35 @@ const {
     createPedido,
     updatePedido,
     deletePedido,
-  } = require('../pedido/pedido.controller.js');
+  } = require('../../pedido/pedido.controller.js');
 const {
     createPedidoMongo,
     getPedidoMongo,
     getPedidosMongo,
     updatePedidoMongo,
     softDeletePedidoMongo,
-} = require('../pedido/pedido.actions.js');
+} = require('../../pedido/pedido.actions.js');
 const {
     getLibroMongo,
     updateLibroMongo,
-} = require('../libro/libro.actions');
+} = require('../../libro/libro.actions.js');
 
-jest.mock('../libro/libro.actions');
-jest.mock('../libro/libro.model');
-jest.mock('../pedido/pedido.model');
-jest.mock('../login/login.actions', () => ({
+jest.mock('../../libro/libro.actions');
+jest.mock('../../libro/libro.model');
+jest.mock('../../pedido/pedido.model');
+jest.mock('../../login/login.actions', () => ({
     verificarTokenJWT: (req, res, next) => {
         req.userId = 1; // Asignar un valor de userId por defecto para los tests
         next();
     }
 }));
 
-const Libro = require('../libro/libro.model.js');
-const Pedido = require('../pedido/pedido.model.js');
+const Libro = require('../../libro/libro.model.js');
+const Pedido = require('../../pedido/pedido.model.js');
 
 const app = express();
 app.use(express.json());
-const pedidoRuta = require("../pedido/pedido.route.js");
+const pedidoRuta = require("../../pedido/pedido.route.js");
 app.use("/pedido", pedidoRuta);
 
 describe("Pruebas de integración de pedido controlador-accion", () => {

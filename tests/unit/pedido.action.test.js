@@ -1,7 +1,7 @@
-const { getPedidosMongo, getPedidoMongo, createPedidoMongo, updatePedidoMongo, softDeletePedidoMongo } = require('../pedido/pedido.actions');
-const Pedido = require('../pedido/pedido.model');
+const { getPedidosMongo, getPedidoMongo, createPedidoMongo, updatePedidoMongo, softDeletePedidoMongo } = require('../../pedido/pedido.actions');
+const Pedido = require('../../pedido/pedido.model');
 
-jest.mock('../pedido/pedido.model');
+jest.mock('../../pedido/pedido.model');
 
 describe('Pedido Actions', () => {
   describe('getPedidosMongo', () => {

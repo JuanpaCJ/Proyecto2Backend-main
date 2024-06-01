@@ -49,17 +49,16 @@ async function PostLibro(req, res) {
 
 async function PatchLibros(req, res) {
     try {
-        // llamada a controlador con los datos
-        await updateLibro(req.body, req.userId);
-
-        res.status(200).json({
-            mensaje: "Libro actualizado. 👍"
-        });
+      await updateLibro(req.body, req.userId);
+      res.status(200).json({
+        mensaje: "Libro actualizado. 👍"
+      });
     } catch (e) {
-        const errorObj = JSON.parse(e.message);
-        res.status(errorObj.code).json({ error: errorObj.msg });
+      const errorObj = JSON.parse(e.message);
+      res.status(errorObj.code).json({ error: errorObj.msg });
     }
-}
+  }
+  
 
 
 async function DeleteLibros(req, res) {

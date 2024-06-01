@@ -1,13 +1,13 @@
 const request = require("supertest");
 const express = require("express");
 
-const {readUsuario, createUsuario, updateUsuario, deleteUsuario } = require('../usuario/usuario.controller.js');
-const { createUsuarioMongo, getUsuarioMongo, updateUsuarioMongo, softDeleteUsuarioMongo } = require('../usuario/usuario.actions.js');
-const Usuario = require('../usuario/usuario.model');
+const {readUsuario, createUsuario, updateUsuario, deleteUsuario } = require('../../usuario/usuario.controller.js');
+const { createUsuarioMongo, getUsuarioMongo, updateUsuarioMongo, softDeleteUsuarioMongo } = require('../../usuario/usuario.actions.js');
+const Usuario = require('../../usuario/usuario.model.js');
 
-jest.mock('../usuario/usuario.model');
-jest.mock('../usuario/usuario.actions');
-jest.mock('../login/login.actions', () => ({
+jest.mock('../../usuario/usuario.model');
+jest.mock('../../usuario/usuario.actions');
+jest.mock('../../login/login.actions', () => ({
     verificarTokenJWT: (req, res, next) => {
         req.userId = 1; // Asignar un valor de userId por defecto para los tests
         next();
@@ -17,7 +17,7 @@ jest.mock('../login/login.actions', () => ({
 
 const app = express();
 app.use(express.json());
-const usuarioRuta = require("../usuario/usuario.route.js");
+const usuarioRuta = require("../../usuario/usuario.route.js");
 app.use("/usuarios", usuarioRuta);
 
 

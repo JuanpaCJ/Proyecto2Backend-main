@@ -1,15 +1,15 @@
 const request = require("supertest");
 const express = require("express");
-jest.mock('../libro/libro.controller.js');
-jest.mock('../login/login.actions', () => ({
+jest.mock('../../libro/libro.controller.js');
+jest.mock('../../login/login.actions', () => ({
     verificarTokenJWT: (req, res, next) => {
         req.userId = 1; // Asignar un valor de userId por defecto para los tests
         next();
     }
 }));
 
-const libroRuta = require("../libro/libro.route.js");
-const { createLibro, readLibro, updateLibro, deleteLibro, readLibroConFiltros } = require("../libro/libro.controller.js");
+const libroRuta = require("../../libro/libro.route.js");
+const { createLibro, readLibro, updateLibro, deleteLibro, readLibroConFiltros } = require("../../libro/libro.controller.js");
 
 // Crear una instancia de la aplicación Express
 const app = express();

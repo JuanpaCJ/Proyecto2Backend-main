@@ -1,6 +1,6 @@
-const { getUsuarioMongo, createUsuarioMongo, updateUsuarioMongo, softDeleteUsuarioMongo } = require('../usuario/usuario.actions');
-const Usuario = require('../usuario/usuario.model');
-jest.mock('../usuario/usuario.model');
+const { getUsuarioMongo, createUsuarioMongo, updateUsuarioMongo, softDeleteUsuarioMongo } = require('../../usuario/usuario.actions');
+const Usuario = require('../../usuario/usuario.model');
+jest.mock('../../usuario/usuario.model');
 
 describe('Usuario Actions', () => {
   describe('getUsuarioMongo', () => {

@@ -3,17 +3,17 @@ const {
     createUsuario,
     updateUsuario,
     deleteUsuario,
-  } = require('../usuario/usuario.controller');
+  } = require('../../usuario/usuario.controller');
   const {
     createUsuarioMongo,
     getUsuarioMongo,
     updateUsuarioMongo,
     softDeleteUsuarioMongo,
-  } = require('../usuario/usuario.actions');
-  const Usuario = require('../usuario/usuario.model');
+  } = require('../../usuario/usuario.actions');
+  const Usuario = require('../../usuario/usuario.model');
   
-  jest.mock('../usuario/usuario.actions');
-  jest.mock('../usuario/usuario.model');
+  jest.mock('../../usuario/usuario.actions');
+  jest.mock('../../usuario/usuario.model');
   
   describe('Usuarios Controller', () => {
     describe('readUsuario', () => {

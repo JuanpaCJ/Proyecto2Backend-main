@@ -4,18 +4,18 @@ const {
     createLibro,
     updateLibro,
     deleteLibro,
-  } = require('../libro/libro.controller');
+  } = require('../../libro/libro.controller');
   const {
     createLibroMongo,
     getLibroMongo,
     getLibrosMongo,
     updateLibroMongo,
     softDeleteLibroMongo,
-  } = require('../libro/libro.actions');
-  const Libro = require('../libro/libro.model');
+  } = require('../../libro/libro.actions');
+  const Libro = require('../../libro/libro.model');
   
-  jest.mock('../libro/libro.actions');
-  jest.mock('../libro/libro.model');
+  jest.mock('../../libro/libro.actions');
+  jest.mock('../../libro/libro.model');
   
   describe('Libros Controller', () => {
     describe('readLibroConFiltros', () => {
