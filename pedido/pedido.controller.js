@@ -8,7 +8,7 @@ async function readPedidoConFiltros(query, userId) {
   const { estado, fechainicio, fechafin, todo, ...resto } = query;
 
   if (Object.keys(resto).length > 0) {
-    throw new Error("No puedes filtrar por eso");
+    throw new Error(JSON.stringify({ code: 400, msg: 'no puedes filtrar por eso' }));
   }
   const { todo: todito, fechainicio: fechitai, fechafin: fechitaf, ...filtros } = query;
   if (fechafin && fechainicio) {
@@ -28,12 +28,10 @@ async function readPedidoConFiltros(query, userId) {
 
     resultadosBusqueda = await getPedidosMongo({ ...filtros, isDeleted: false });
   }
-
   const resultadosFiltrados = await Promise.all(resultadosBusqueda.resultados.map(async (pedido) => {
     if (pedido.libros && pedido.libros.length > 0) {
       // Obtener el libro de la base de datos
       const libro = await getLibroMongo(pedido.libros[0], false);
-
       // Verificar si el vendedor del libro es igual a userID
       if (libro.vendedor.toHexString() === userId || pedido.idComprador.toHexString() === userId) {
         return pedido; // Si el vendedor coincide, retornar el pedido
@@ -45,7 +43,6 @@ async function readPedidoConFiltros(query, userId) {
     }
     return null; // Si no se encontró ningún libro del vendedor, retornar null
   }));
-
   // Filtrar los resultados para eliminar los valores nulos (pedidos que no coinciden con el criterio)
   return resultadosFiltrados.filter(pedido => pedido !== null);
 
