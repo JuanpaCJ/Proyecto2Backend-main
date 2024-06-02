@@ -25,7 +25,6 @@ async function PostUsuario(req, res) {
            usuario: usuarioCreado,
        });
     } catch (error) {
-        console.log(error)
         const errorObj = JSON.parse(error.message);
         res.status(errorObj.code).json({ error: errorObj.msg });
     }
@@ -40,7 +39,6 @@ async function PatchUsuarios(req, res) {
             mensaje: "Usuario modificado. 👍"
         });
     } catch (e) {
-        console.log(e)
         const errorObj = JSON.parse(e.message);
         res.status(errorObj.code).json({ error: errorObj.msg });
     }

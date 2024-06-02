@@ -25,8 +25,6 @@ async function createUsuario(datos) {
 async function updateUsuario(datos, userId) {
   const { _id, ...cambios } = datos;
   const usuario = await Usuario.findById(_id);
-  console.log("xsxsxs")
-  console.log(usuario)
   if (!usuario) {
     throw new Error(JSON.stringify({code: 404, msg:"Usuario no existe"}));
   }

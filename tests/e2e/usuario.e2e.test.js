@@ -20,7 +20,7 @@ describe('User End-to-End Tests', () => {
   let server;
 
   beforeAll(() => {
-    server = app.listen(3000);
+    server = app.listen(3005);
   });
 
   afterAll((done) => {
